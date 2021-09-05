@@ -1,0 +1,9 @@
+plugins {
+    id 'application'
+}
+
+mainClassName = 'com.addi.challenge.App'
+
+dependencies {
+    implementation project(':core')
+}

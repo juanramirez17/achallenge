@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.addi'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:2.5.4")
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
+    }
+
+    test {
+        useJUnitPlatform{
+            includeEngines 'junit-jupiter'
+        }
+    }
+}
