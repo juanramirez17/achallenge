@@ -1,7 +1,9 @@
-package com.addi.challenge.vo;
+package com.addi.challenge.entity;
 
 import com.addi.challenge.constraint.BirthDateConstraint;
 import com.addi.challenge.exception.ObjectValidatorException;
+import com.addi.challenge.vo.Identification;
+import com.addi.challenge.vo.ObjectValidator;
 import lombok.*;
 
 import javax.validation.Valid;

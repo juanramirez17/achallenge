@@ -1,6 +1,6 @@
 package com.addi.challenge.dummy;
 
-import com.addi.challenge.vo.Person;
+import com.addi.challenge.entity.Person;
 
 public class DummyPerson {
 

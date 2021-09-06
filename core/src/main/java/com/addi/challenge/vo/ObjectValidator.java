@@ -1,5 +1,6 @@
 package com.addi.challenge.vo;
 
+import lombok.Getter;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 
 import javax.validation.Validation;
@@ -10,6 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Getter
 public class ObjectValidator<T> {
 
     protected Boolean isValid = false;

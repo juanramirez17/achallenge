@@ -1,6 +1,7 @@
-package com.addi.challenge.vo;
+package com.addi.challenge.entity;
 
 import com.addi.challenge.dummy.DummyPerson;
+import com.addi.challenge.entity.Person;
 import com.addi.challenge.exception.ObjectValidatorException;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class PersonTest {
     @Test
     void createSuccessPerson() {
         Person person = DummyPerson.createOne();
-        assertTrue(person.isValid);
+        assertTrue(person.getIsValid());
     }
 
     @Test

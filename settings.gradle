@@ -1,4 +1,5 @@
 rootProject.name = 'addichallenge'
 include 'core'
-include 'console'
+include 'application'
+include 'infrastructure'
 
