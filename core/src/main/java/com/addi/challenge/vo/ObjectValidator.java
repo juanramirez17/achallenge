@@ -1,8 +1,9 @@
 package com.addi.challenge.vo;
 
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
+
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,11 +14,13 @@ public class ObjectValidator<T> {
 
     protected Boolean isValid = false;
     protected List<Violation> violations = new ArrayList<>();
-    private ValidatorFactory factory;
 
     protected void validate(T t) {
-        factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
+        Validator validator = Validation.byDefaultProvider()
+            .configure()
+            .messageInterpolator(new ParameterMessageInterpolator())
+            .buildValidatorFactory()
+            .getValidator();
         violations = validator.validate(t)
             .stream().map(cv -> new Violation(t.getClass().getSimpleName(), cv.getPropertyPath().toString(), Optional.ofNullable(cv.getInvalidValue()).map(Object::toString).orElseGet(() -> null), cv.getPropertyPath().toString() + " : " + cv.getMessage()))
             .collect(Collectors.toList());
@@ -43,6 +46,6 @@ public class ObjectValidator<T> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(isValid, violations, factory);
+        return Objects.hash(isValid, violations);
     }
 }
