@@ -6,6 +6,7 @@ import com.addi.challenge.port.out.UserRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 
 @Component
 public class Console implements ApplicationRunner {
@@ -21,28 +22,24 @@ public class Console implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-
         System.out.println("LIST OF LEAD");
         userRepository.getAll()
-            .block()
-            .stream()
-            .forEach(u -> {
-                    System.out.println("id: " + u.getId() + " name: " + u.getPerson().getFirstName() +
-                        " state :" + u.getState().toString());
-                    userLeadQualifyApi.execute(QualifyLeadCommand.builder()
-                        .idInOurRepo(u.getId().toString()) // TODO this value should be the id identification number (CC)
-                        .build()).block();
-                }
-            );
+            .flatMapMany(Flux::fromIterable)
+            .doOnNext(u -> System.out.println("id: " + u.getId() + " name: " + u.getPerson().getFirstName() +
+                " state :" + u.getState().toString()))
+            .map(u -> userLeadQualifyApi.execute(QualifyLeadCommand.builder()
+                .idInOurRepo(u.getId().toString()) // TODO this value should be the id identification number (CC)
+                .build())
+                .subscribe())
+            .subscribe();
 
-        System.out.println("LIST OF USER SOME NOW ARE PROSPECTS");
+        Thread.sleep(500);
         userRepository.getAll()
-            .block()
-            .stream()
-            .forEach(u -> {
+            .doOnNext(users -> {
+                users.stream().forEach(u ->
                     System.out.println("id: " + u.getId() + " name: " + u.getPerson().getFirstName() +
-                        " state :" + u.getState().toString());
-                }
-            );
+                        " state :" + u.getState().toString()));
+            })
+            .subscribe();
     }
 }
